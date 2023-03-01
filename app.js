@@ -14,7 +14,8 @@ const client = new Client(
     DB_Port:process.env.DB_Port|| 5432,
 
 
-   ssl: { rejectUnauthorized: false },});
+   //ssl: { rejectUnauthorized: false },
+});
 client.connect(function (res, error) {console.log('connected')})
 
 let express=require("express")
