@@ -12,7 +12,7 @@ const client = new Client(
     DB_Password:process.env.DB_Password||"root",
     DB_Name:process.env.DB_Name||"test_db",
     DB_Port:process.env.DB_Port|| 5432,
-
+postgresql:'//postgres:AZpscjVNAjrw4P4DFLWW@containers-us-west-48.railway.app:7110/railway'
 
    //ssl: { rejectUnauthorized: false },
 });
