@@ -81,24 +81,50 @@ client.query(query, function (err, result)
 });
 });
 
+app.post('/mobiles', (req, res)=> {
+    const user = req.body;
+    let insertQuery = `INSERT INTO mobiles(brand, model, price) VALUES('${user.brand}', '${user.model}', '${user.price}');`
 
-
-/*let mysql=require("mysql")
-/*let connData={
-    host:"localhost",
-    user:"root",
-    password:"",
-    database:"testDB"
-}
-let connData={
-    DB_Host:  process.env.DB_Host|| "localhost",
-    DB_User: process.env.DB_User||"root",
-    DB_Password:process.env.DB_Password||"",
-    DB_Name:process.env.DB_Name||"testDB",
-    DB_Port:process.env.DB_Port||3306,
-
+    client.query(insertQuery, (err, result)=>{
+        if(!err){
+            console.log(result)
+            res.send('Insertion was successful')
+        }
+        else{ console.log(err.message) }
+    })
     
-}
+})
+
+app.put('/mobiles/:model', (req, res)=> {
+    let model=req.params.model
+    let user = req.body;
+    console.log(user)
+    let updateQuery = `UPDATE mobiles SET brand = '${user.brand}',
+                       model = '${user.model}',
+                       price = '${user.price}'
+                       WHERE model = '${model}';`
+
+    client.query(updateQuery, (err, result)=>{
+        if(!err){
+            res.send('Update was successful')
+        }
+        else{ console.log(err.message) }
+    })
+    
+})
+
+
+app.delete('/mobiles/:model', (req, res)=> {
+    let insertQuery = `delete from mobiles where model='${req.params.model}'`
+
+    client.query(insertQuery, (err, result)=>{
+        if(!err){
+            res.send('Deletion was successful')
+        }
+        else{ console.log(err.message) }
+    })
+})
+
 
 
 
@@ -106,17 +132,8 @@ let connData={
 
 
 
-app.get("/svr/mobiles/:brand",function(req,res){
-    let brand=req.params.brand
-    console.log(brand)
-    let connection=mysql.createConnection(connData)
-    let sql=`SELECT * FROM mobiles where brand='${brand}'`
-    connection.query(sql,function(err,result){
-        if(err) res.status(404).send("Not found")
-        else res.send(result)
-    })
-})
 
+/*
 app.post("/svr/mobiles",function(req,res){
     let body=req.body
     value=[body.brand,body.model,body.price]
