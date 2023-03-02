@@ -41,7 +41,7 @@ app.use(express.json())
 var port=process.env.PORT || 2410;
 app.listen(port,()=>console.log(`Node app are listening on port ${port}`))
 
-app.get("/users", function (req, res, next) 
+app.get("/mobiles", function (req, res, next) 
 {
     console.log("Inside /users get api");
     
@@ -56,9 +56,32 @@ client.query(query, function (err, result)
      
  res.send(result.rows); 
  console.log(result.rows)  } 
-client.end();
+//client.end();
 });
 });
+
+
+app.get("/mobiles/:brand", function (req, res, next) 
+{
+    let brand=req.params.brand
+    console.log("Inside /users get api");
+    
+const query = ` SELECT * FROM mobiles WHERE  brand='${brand}';`;
+client.query(query, function (err, result)
+
+ {if (err) {
+    console.log(err)
+     res.status(400).send(err);}
+     else{
+
+     
+ res.send(result.rows); 
+ console.log(result.rows)  } 
+//client.end();
+});
+});
+
+
 
 /*let mysql=require("mysql")
 /*let connData={
@@ -78,48 +101,11 @@ let connData={
 }
 
 
-let express=require("express")
-let app=express()
-app.use(function(req,res,next){
-    res.header("Access-Control-Allow-Origin","*");
 
-res.header(
-    "Access-Control-Allow-Methods",
-    "GET,POST,OPTIONS,PUT,PATCH,DELETE,HEAD"
-)
+   
 
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin,X-Requested-With,Content-Type,accept"
-    )
-    next();
-    
-})
 
-app.use(express.json())
-//const port=2410
-var port=process.env.PORT || 2410;
-app.listen(port,()=>console.log(`Node app are listening on port ${port}`))
 
-app.get("/svr/mobiles",function(req,res){
-    let connection=mysql.createConnection(connData)
-    let sql="SELECT * FROM mobiles"
-    connection.query(sql,function(err,result){
-        if(err) res.status(404).send(err)
-        else res.send(result)
-    })
-})
-
-app.get("/svr/mobiles/:id",function(req,res){
-    let id=+req.params.id
-    console.log(id)
-    let connection=mysql.createConnection(connData)
-    let sql=`SELECT * FROM mobiles where id=${id}`
-    connection.query(sql,function(err,result){
-        if(err) res.status(404).send("Not found")
-        else res.send(result)
-    })
-})
 app.get("/svr/mobiles/:brand",function(req,res){
     let brand=req.params.brand
     console.log(brand)
